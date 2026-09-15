@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>王田彬 · 信息安全 / PWN</title>
+<meta name="description" content="王田彬（Neura0721）— 西安邮电大学网络空间安全学院 信息安全 2027 届，主攻二进制安全 / PWN，关注渗透测试与威胁分析。">
+<meta property="og:title" content="王田彬 · 信息安全 / PWN">
+<meta property="og:description" content="西安邮电大学 · 网络空间安全学院 · 信息安全（2027 届）｜主攻二进制安全 / PWN">
+<meta property="og:type" content="profile">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%231b4b73'/><text x='16' y='23' font-size='19' font-family='sans-serif' font-weight='700' fill='%23fff' text-anchor='middle'>王</text></svg>">
+
+<style>
+:root{
+  --ink:#1a1f26;
+  --ink-soft:#4a5560;
+  --ink-mute:#7b8794;
+  --accent:#1b4b73;
+  --accent-2:#2c6da4;
+  --line:#dfe4ea;
+  --bg:#f4f7fa;
+  --card:#ffffff;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --ink:#e6ebf1;
+    --ink-soft:#a9b6c4;
+    --ink-mute:#7b8794;
+    --accent:#5ea3dd;
+    --accent-2:#8cc0ea;
+    --line:#2a3441;
+    --bg:#12171d;
+    --card:#1a212a;
+  }
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+  font-family:"PingFang SC","Microsoft YaHei","Hiragino Sans GB",
+              "Source Han Sans SC","Noto Sans CJK SC",-apple-system,
+              BlinkMacSystemFont,"Segoe UI",sans-serif;
+  background:var(--bg);
+  color:var(--ink);
+  line-height:1.7;
+  font-size:15px;
+  -webkit-font-smoothing:antialiased;
+  padding:0 20px 60px;
+}
+
+.wrap{max-width:860px;margin:0 auto;}
+
+/* ============ 页头 ============ */
+header{
+  padding:56px 0 28px;
+  border-bottom:2.5px solid var(--accent);
+  margin-bottom:32px;
+}
+.hdr{
+  display:flex;
+  align-items:flex-start;
+  gap:28px;
+  justify-content:space-between;
+}
+.hdr-main{flex:1;min-width:0;}
+h1{
+  font-size:34px;
+  font-weight:800;
+  letter-spacing:1px;
+  line-height:1.2;
+  color:var(--ink);
+}
+h1 .handle{
+  font-size:16px;
+  font-weight:500;
+  color:var(--ink-mute);
+  letter-spacing:0;
+  margin-left:10px;
+}
+.tagline{
+  margin-top:10px;
+  color:var(--ink-soft);
+  font-size:14.5px;
+}
+.tagline .sep{color:var(--line);margin:0 7px;}
+.contact{
+  margin-top:18px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px 10px;
+}
+.contact a,.contact span{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  font-size:13.5px;
+  color:var(--ink-soft);
+  text-decoration:none;
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:6px;
+  padding:5px 11px;
+  transition:.16s;
+}
+.contact a:hover{
+  color:var(--accent);
+  border-color:var(--accent);
+  transform:translateY(-1px);
+}
+
+/* 内联 SVG 图标：任何系统/主题下渲染一致，且自动跟随文字颜色 */
+.ico{
+  width:14px;height:14px;
+  flex-shrink:0;
+  stroke:currentColor;
+  stroke-width:1.9;
+  fill:none;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+.ico-fill{fill:currentColor;stroke:none;}
+
+.avatar{
+  width:96px;height:96px;
+  border-radius:50%;
+  object-fit:cover;
+  border:3px solid var(--card);
+  box-shadow:0 0 0 2px var(--line);
+  flex-shrink:0;
+}
+
+/* ============ 按钮 ============ */
+.btns{margin-top:22px;display:flex;flex-wrap:wrap;gap:10px;}
+.btn{
+  display:inline-flex;align-items:center;gap:7px;
+  padding:9px 20px;
+  border-radius:7px;
+  font-size:14px;
+  font-weight:600;
+  text-decoration:none;
+  transition:.16s;
+  border:1.5px solid transparent;
+}
+.btn-primary{background:var(--accent);color:#fff;}
+.btn-primary:hover{background:var(--accent-2);transform:translateY(-1px);}
+.btn-ghost{background:transparent;color:var(--accent);border-color:var(--line);}
+.btn-ghost:hover{border-color:var(--accent);transform:translateY(-1px);}
+
+/* ============ 板块 ============ */
+section{margin-bottom:38px;}
+h2{
+  font-size:19px;
+  font-weight:700;
+  color:var(--accent);
+  letter-spacing:.6px;
+  padding-bottom:8px;
+  margin-bottom:18px;
+  border-bottom:1px solid var(--line);
+  display:flex;align-items:center;gap:9px;
+}
+h2::before{
+  content:"";
+  width:4px;height:17px;
+  background:var(--accent);
+  border-radius:2px;
+  flex-shrink:0;
+}
+
+/* ============ 关于 ============ */
+.about{color:var(--ink-soft);font-size:15px;}
+.about li{
+  list-style:none;
+  position:relative;
+  padding-left:20px;
+  margin-bottom:7px;
+}
+.about li::before{
+  content:"";
+  position:absolute;
+  left:3px;top:.72em;
+  width:5px;height:5px;
+  border-radius:50%;
+  background:var(--accent);
+}
+
+/* ============ 技能表 ============ */
+.skills{
+  width:100%;
+  border-collapse:collapse;
+  font-size:14px;
+  background:var(--card);
+  border-radius:9px;
+  overflow:hidden;
+  box-shadow:0 1px 3px rgba(0,0,0,.05);
+}
+.skills tr{border-bottom:1px solid var(--line);}
+.skills tr:last-child{border-bottom:none;}
+.skills th{
+  text-align:left;
+  font-weight:700;
+  color:var(--accent);
+  padding:11px 16px;
+  width:110px;
+  white-space:nowrap;
+  vertical-align:top;
+  background:color-mix(in srgb, var(--accent) 5%, transparent);
+}
+.skills td{padding:11px 16px;color:var(--ink-soft);}
+
+/* ============ 仓库卡片 ============ */
+.repos{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:14px;
+}
+.repo{
+  display:block;
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:18px;
+  text-decoration:none;
+  color:inherit;
+  transition:.18s;
+  box-shadow:0 1px 3px rgba(0,0,0,.05);
+}
+.repo:hover{
+  border-color:var(--accent);
+  transform:translateY(-2px);
+  box-shadow:0 6px 18px rgba(27,75,115,.13);
+}
+.repo-name{
+  font-weight:700;
+  font-size:15.5px;
+  color:var(--accent);
+  display:flex;align-items:center;gap:7px;
+  margin-bottom:7px;
+}
+.repo-name .lang{
+  font-size:11.5px;
+  font-weight:500;
+  color:var(--ink-mute);
+  border:1px solid var(--line);
+  border-radius:20px;
+  padding:1px 8px;
+  margin-left:auto;
+}
+.repo-desc{
+  font-size:13.5px;
+  color:var(--ink-soft);
+  line-height:1.62;
+}
+
+/* ============ 时间线 ============ */
+.tl{position:relative;padding-left:22px;}
+.tl::before{
+  content:"";
+  position:absolute;
+  left:4px;top:6px;bottom:6px;
+  width:2px;
+  background:var(--line);
+}
+.tl-item{position:relative;margin-bottom:20px;}
+.tl-item:last-child{margin-bottom:0;}
+.tl-item::before{
+  content:"";
+  position:absolute;
+  left:-22px;top:7px;
+  width:10px;height:10px;
+  border-radius:50%;
+  background:var(--card);
+  border:2.5px solid var(--accent);
+}
+.tl-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:baseline;
+  gap:12px;
+  flex-wrap:wrap;
+}
+.tl-title{font-weight:700;font-size:15px;color:var(--ink);}
+.tl-title .role{font-weight:500;color:var(--ink-soft);font-size:14px;}
+.tl-meta{font-size:13px;color:var(--ink-mute);white-space:nowrap;}
+.tl-body{
+  margin-top:5px;
+  font-size:14px;
+  color:var(--ink-soft);
+}
+.tl-body li{
+  list-style:none;
+  position:relative;
+  padding-left:17px;
+  margin-top:4px;
+}
+.tl-body li::before{
+  content:"";
+  position:absolute;
+  left:2px;top:.72em;
+  width:4.5px;height:4.5px;
+  border-radius:50%;
+  background:var(--ink-mute);
+}
+
+/* ============ 荣誉 ============ */
+.honors{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(360px,1fr));
+  gap:9px;
+}
+.honor{
+  display:flex;
+  align-items:baseline;
+  gap:10px;
+  font-size:14px;
+  color:var(--ink-soft);
+  background:var(--card);
+  border-left:3px solid var(--accent);
+  border-radius:0 7px 7px 0;
+  padding:9px 14px;
+}
+/* 文本整体占满剩余宽度，避免 <b> 与后续文案被拆成两个 flex item 强行换行 */
+.honor .txt{flex:1;min-width:0;}
+.honor b{color:var(--ink);font-weight:600;}
+.honor .yr{font-size:12.5px;color:var(--ink-mute);white-space:nowrap;flex-shrink:0;}
+
+/* ============ 页脚 ============ */
+footer{
+  margin-top:52px;
+  padding-top:24px;
+  border-top:1px solid var(--line);
+  text-align:center;
+  font-size:13px;
+  color:var(--ink-mute);
+  line-height:2;
+}
+footer a{color:var(--accent);text-decoration:none;}
+footer a:hover{text-decoration:underline;}
+
+/* ============ 响应式 ============ */
+@media (max-width:640px){
+  body{padding:0 16px 44px;font-size:14.5px;}
+  header{padding:36px 0 22px;}
+  .hdr{flex-direction:column-reverse;gap:18px;}
+  .avatar{width:76px;height:76px;}
+  h1{font-size:27px;}
+  h1 .handle{display:block;margin:6px 0 0;font-size:14px;}
+  /* 窄屏防溢出：长邮箱/URL 允许在任意位置断行 */
+  .contact{overflow-wrap:anywhere;}
+  .contact a,.contact span{max-width:100%;}
+  code{overflow-wrap:anywhere;}
+  .skills th{width:auto;display:block;padding-bottom:2px;}
+  .skills td{display:block;padding-top:0;}
+  .skills tr{display:block;padding:9px 0;}
+  .tl-head{flex-direction:column;gap:2px;}
+  section{margin-bottom:30px;}
+}
+
+@media print{
+  body{background:#fff;padding:0;}
+  .btns,.contact a:hover{display:none;}
+  .repo:hover{transform:none;box-shadow:none;}
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <!-- ══════════ 页头 ══════════ -->
+  <header>
+    <div class="hdr">
+      <div class="hdr-main">
+        <h1>王田彬<span class="handle">Neura0721</span></h1>
+        <div class="tagline">
+          西安邮电大学 · 网络空间安全学院 · 信息安全（2027 届）
+          <span class="sep">|</span>
+          主攻二进制安全 / PWN
+          <span class="sep">|</span>
+          关注渗透测试与威胁分析
+        </div>
+        <div class="contact">
+          <span>
+            <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.6"/></svg>
+            西安
+          </span>
+          <a href="mailto:806999797@qq.com">
+            <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.5 7l8.5 6 8.5-6"/></svg>
+            806999797@qq.com
+          </a>
+          <a href="https://github.com/Neura0721" target="_blank" rel="noopener">
+            <svg class="ico ico-fill" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.7-1.6-2.7-.3-5.5-1.3-5.5-5.9 0-1.3.5-2.4 1.2-3.2-.1-.3-.5-1.5.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2.6 1.7.2 2.9.1 3.2.8.8 1.2 1.9 1.2 3.2 0 4.6-2.8 5.6-5.5 5.9.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .3"/></svg>
+            GitHub
+          </a>
+          <a href="https://www.cnblogs.com/Neurahome" target="_blank" rel="noopener">
+            <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h8l5 5v13H6z"/><path d="M14 3v5h5"/><path d="M9 13h7M9 17h5"/></svg>
+            博客园
+          </a>
+        </div>
+        <div class="btns">
+          <a class="btn btn-primary" href="resume.pdf" download>
+            <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v11"/><path d="M8 11l4 4 4-4"/><path d="M4 20h16"/></svg>
+            下载简历 PDF
+          </a>
+          <a class="btn btn-ghost" href="https://github.com/Neura0721" target="_blank" rel="noopener">
+            <svg class="ico ico-fill" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.7-1.6-2.7-.3-5.5-1.3-5.5-5.9 0-1.3.5-2.4 1.2-3.2-.1-.3-.5-1.5.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2.6 1.7.2 2.9.1 3.2.8.8 1.2 1.9 1.2 3.2 0 4.6-2.8 5.6-5.5 5.9.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .3"/></svg>
+            查看 GitHub
+          </a>
+        </div>
+      </div>
+      <img class="avatar" src="avatar.png" alt="王田彬">
+    </div>
+  </header>
+
+  <!-- ══════════ 关于我 ══════════ -->
+  <section>
+    <h2>关于我</h2>
+    <ul class="about">
+      <li><b>校网络科技实验室安全组负责人</b>（2025.06 – 2026.09），带 5 人小组做 CTF 训练与竞赛备赛</li>
+      <li>主攻 <b>PWN</b> 方向，熟悉栈溢出、ROP、ret2libc、栈迁移、格式化字符串等利用技术</li>
+      <li>具备完整渗透测试能力：信息收集 → 漏洞探测 → 漏洞利用 → 权限提升 → 横向移动</li>
+      <li>有企业级安全产品实操经验（360 天擎终端安全管理）与安全告警研判经验</li>
+      <li>持续整理技术笔记与实战 Writeup</li>
+    </ul>
+  </section>
+
+  <!-- ══════════ 技能栈 ══════════ -->
+  <section>
+    <h2>技能栈</h2>
+    <table class="skills">
+      <tr><th>渗透测试</th><td>Nmap · Masscan · Burp Suite · SQLMap · Metasploit · Hydra · Wireshark · dirsearch</td></tr>
+      <tr><th>二进制安全</th><td>PWN · 栈溢出 · ROP · ret2libc · 栈迁移 · 格式化字符串 · Canary 绕过</td></tr>
+      <tr><th>工具链</th><td>ROPgadget · GDB / pwndbg · objdump · Radare2</td></tr>
+      <tr><th>密码学</th><td>AES · RSA · ElGamal · DH · Shamir 门限 · 数字签名 · MAC</td></tr>
+      <tr><th>开发</th><td>C / Python（熟练）· C++（了解）</td></tr>
+      <tr><th>系统网络</th><td>Linux（Kali / Ubuntu）· TCP/IP · 防火墙安全域 · NAT · GRE VPN</td></tr>
+      <tr><th>威胁分析</th><td>Wireshark / 天眼流量过滤规则 · 安全告警研判与定性</td></tr>
+    </table>
+  </section>
+
+  <!-- ══════════ 项目经历 ══════════ -->
+  <section>
+    <h2>项目经历</h2>
+    <div class="tl">
+      <div class="tl-item">
+        <div class="tl-head">
+          <div class="tl-title">奇安信 × 西安邮电大学　<span class="role">网络安全联合实训</span></div>
+          <div class="tl-meta">2026.07 – 2026.08</div>
+        </div>
+        <ul class="tl-body">
+          <li><b>内网渗透</b>：独立完成 3 个渗透实战项目全流程攻击，掌握 4 类 CVE 完整利用链（Drupalgeddon2 / Moodle RCE / 脏牛 / overlayfs）</li>
+          <li><b>终端安全</b>：完成 360 天擎终端安全管理系统服务端与客户端部署，配置分组策略、安全检查模板、USB 外设管控、违规外联限制等</li>
+          <li><b>威胁分析</b>：独立完成 11 类安全告警的研判与定性，输出每类告警的判定依据与处置结论</li>
+        </ul>
+      </div>
+      <div class="tl-item">
+        <div class="tl-head">
+          <div class="tl-title">渗透实战项目　<span class="role">GoldenEye / Drupal 7 / AI Web 1.0</span></div>
+          <div class="tl-meta">2026.07 – 2026.08</div>
+        </div>
+        <ul class="tl-body">
+          <li>GoldenEye：Masscan + Nmap 侦察 → POP3 弱口令爆破 → 邮件横向获取凭据 → 图片隐写提取管理员密码 → Moodle RCE + overlayfs 提权至 root</li>
+          <li>Drupal 7：Netdiscover 定位目标 → Drupalgeddon2 获取 Shell 并分析漏洞成因（Form API 未过滤 <code>#</code> 开头渲染数组）→ cewl 定制字典爆破 SSH → 脏牛提权</li>
+          <li>AI Web 1.0：robots.txt 发现隐藏目录 → 敏感信息泄露漏洞获取绝对路径 → Burp Suite 配合 SQLMap 完成注入点探测与数据提取</li>
+        </ul>
+      </div>
+      <div class="tl-item">
+        <div class="tl-head">
+          <div class="tl-title">企业级防火墙与 GRE VPN 组网实验</div>
+          <div class="tl-meta">2026.07</div>
+        </div>
+        <ul class="tl-body">
+          <li>规划总部与分支机构网络拓扑，完成防火墙安全域划分（Trust / Untrust / DMZ / Local）</li>
+          <li>配置 GRE VPN 隧道实现跨站点互访；通过 NAT Server 将内网 Telnet 服务映射至公网，Easy IP 实现分支访问外网</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════ 我的仓库 ══════════ -->
+  <section>
+    <h2>我的仓库</h2>
+    <div class="repos">
+      <a class="repo" href="https://github.com/Neura0721/crypto-lab" target="_blank" rel="noopener">
+        <div class="repo-name">crypto-lab <span class="lang">Python</span></div>
+        <div class="repo-desc">密码学核心算法的手写实现：AES / RSA / ElGamal / DH / Shamir</div>
+      </a>
+      <a class="repo" href="https://github.com/Neura0721/pwn-notes" target="_blank" rel="noopener">
+        <div class="repo-name">pwn-notes <span class="lang">Markdown</span></div>
+        <div class="repo-desc">PWN 学习笔记与 CTF 赛题复盘：ROP / ret2libc / 栈迁移 / 格式化字符串</div>
+      </a>
+      <a class="repo" href="https://github.com/Neura0721/ctf-writeups" target="_blank" rel="noopener">
+        <div class="repo-name">ctf-writeups <span class="lang">Markdown</span></div>
+        <div class="repo-desc">渗透测试实战 Writeup：完整攻击链复盘</div>
+      </a>
+    </div>
+  </section>
+
+  <!-- ══════════ 竞赛与荣誉 ══════════ -->
+  <section>
+    <h2>竞赛与荣誉</h2>
+    <div class="honors">
+      <div class="honor"><span class="txt"><b>全国大学生信息安全竞赛</b>（作品赛）· 校级二等奖</span><span class="yr">2025</span></div>
+      <div class="honor"><span class="txt"><b>中国高校计算机大赛 · 网络技术挑战赛</b>（作品赛）· 西北赛区三等奖</span><span class="yr">2025</span></div>
+      <div class="honor"><span class="txt"><b>中国国际大学生创新大赛</b> · 校级三等奖（心屿）</span><span class="yr">2025</span></div>
+      <div class="honor"><span class="txt"><b>中国国际大学生创新大赛</b> · 校级三等奖（不倒翁）</span><span class="yr">2025</span></div>
+    </div>
+  </section>
+
+  <!-- ══════════ 校园经历 ══════════ -->
+  <section>
+    <h2>校园经历</h2>
+    <div class="tl">
+      <div class="tl-item">
+        <div class="tl-head">
+          <div class="tl-title">校网络科技实验室　<span class="role">安全组负责人</span></div>
+          <div class="tl-meta">2025.06 – 2026.09</div>
+        </div>
+        <ul class="tl-body">
+          <li>带领 5 人安全小组开展 CTF 训练与竞赛备赛，负责组内技术方向规划、任务分配与进度监督</li>
+          <li>组织组员参与全国大学生信息安全竞赛、中国高校计算机大赛等赛事，主攻 PWN 与 Web 方向</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div>王田彬 · Neura0721</div>
+    <div>
+      <a href="mailto:806999797@qq.com">806999797@qq.com</a>
+      &nbsp;·&nbsp;
+      <a href="https://github.com/Neura0721" target="_blank" rel="noopener">GitHub</a>
+      &nbsp;·&nbsp;
+      <a href="https://www.cnblogs.com/Neurahome" target="_blank" rel="noopener">博客园</a>
+    </div>
+  </footer>
+
+</div>
+
+</body>
+</html>
