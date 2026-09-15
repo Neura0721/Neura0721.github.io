@@ -447,9 +447,9 @@ footer a:hover{text-decoration:underline;}
           <div class="tl-meta">2026.07 – 2026.08</div>
         </div>
         <ul class="tl-body">
-          <li><b>内网渗透</b>：独立完成 3 个渗透实战项目全流程攻击，掌握 4 类 CVE 完整利用链（Drupalgeddon2 / Moodle RCE / 脏牛 / overlayfs）</li>
-          <li><b>终端安全</b>：完成 360 天擎终端安全管理系统服务端与客户端部署，配置分组策略、安全检查模板、USB 外设管控、违规外联限制等</li>
-          <li><b>威胁分析</b>：独立完成 11 类安全告警的研判与定性，输出每类告警的判定依据与处置结论</li>
+          <li><b>内网渗透</b>：独立完成 3 个渗透实战项目全流程攻击，掌握 4 类 CVE 漏洞的完整利用链</li>
+          <li><b>终端安全</b>：完成 360 天擎终端安全管理系统的服务端与客户端部署，配置分组、外设管控、违规外联等策略</li>
+          <li><b>威胁分析</b>：独立完成 11 类安全告警的研判与定性，输出判定依据与处置结论</li>
         </ul>
       </div>
       <div class="tl-item">
@@ -458,9 +458,9 @@ footer a:hover{text-decoration:underline;}
           <div class="tl-meta">2026.07 – 2026.08</div>
         </div>
         <ul class="tl-body">
-          <li>GoldenEye：Masscan + Nmap 侦察 → POP3 弱口令爆破 → 邮件横向获取凭据 → 图片隐写提取管理员密码 → Moodle RCE + overlayfs 提权至 root</li>
-          <li>Drupal 7：Netdiscover 定位目标 → Drupalgeddon2 获取 Shell 并分析漏洞成因（Form API 未过滤 <code>#</code> 开头渲染数组）→ cewl 定制字典爆破 SSH → 脏牛提权</li>
-          <li>AI Web 1.0：robots.txt 发现隐藏目录 → 敏感信息泄露漏洞获取绝对路径 → Burp Suite 配合 SQLMap 完成注入点探测与数据提取</li>
+          <li>GoldenEye：全端口扫描定位 POP3 与 Web 服务 → 弱口令爆破获取凭据 → 邮件横向获取新凭据 → 图片隐写提取管理员密码 → Moodle RCE + overlayfs 提权至 root</li>
+          <li>Drupal 7：定位目标并识别服务 → 利用 CVE-2018-7600（Drupalgeddon 2）获取 Shell 并分析漏洞成因（Form API 未过滤 <code>#</code> 开头渲染数组）→ 爆破 SSH → 脏牛提权至 root</li>
+          <li>AI Web 1.0：robots.txt 与目录爆破定位隐藏路径 → 敏感信息泄露获取绝对路径与环境变量 → 注入点探测提取数据库信息</li>
         </ul>
       </div>
       <div class="tl-item">
@@ -469,8 +469,8 @@ footer a:hover{text-decoration:underline;}
           <div class="tl-meta">2026.07</div>
         </div>
         <ul class="tl-body">
-          <li>规划总部与分支机构网络拓扑，完成防火墙安全域划分（Trust / Untrust / DMZ / Local）</li>
-          <li>配置 GRE VPN 隧道实现跨站点互访；通过 NAT Server 将内网 Telnet 服务映射至公网，Easy IP 实现分支访问外网</li>
+          <li>规划总部与分支机构网络拓扑，完成 IP 地址规划与防火墙安全域划分（Trust / Untrust / DMZ / Local）</li>
+          <li>配置 GRE VPN 隧道实现跨站点互访；通过 NAT Server 将内网服务映射至公网、Easy IP 实现分支访问外网</li>
         </ul>
       </div>
     </div>
